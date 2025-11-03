@@ -1,4 +1,4 @@
 當代期末project
-
-Download those files and put them in same folder
-Then open 1.html
+HOW TO RUN
+1. Download those files and put them in same folder
+2. Open 1.html
