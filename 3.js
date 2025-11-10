@@ -1,5 +1,7 @@
 const playPreorderBtn=document.getElementById("play_preorder");
 const playInorderBtn=document.getElementById("play_inorder");
+const playPostorderBtn=document.getElementById("play_postorder");
+const playBFSBtn=document.getElementById("play_bfs");
 const bpmRange=document.getElementById("bpm_range");
 const bpmVal=document.getElementById("bpm_val");
 // --- Audio setup ---
@@ -224,6 +226,35 @@ async function inorderPlay(node) {
     node.svgElement.setAttribute("fill", "white");
     await inorderPlay(node.right);
 }
+async function postorderPlay(node) {
+    if (!node) return;
+    await postorderPlay(node.left);
+    await postorderPlay(node.right);
+    // highlight
+    node.svgElement.setAttribute("fill", "yellow");
+    playNote(node.note, node.duration);
+    await new Promise(r => setTimeout(r, node.duration * 1000 * quarter));
+    // unhighlight
+    node.svgElement.setAttribute("fill", "white");
+}
+async function BFSPlay(node) {
+    if (!node) return;
+
+    const queue = [node];
+    while (queue.length > 0) {
+        const current = queue.shift();
+
+        // highlight
+        current.svgElement.setAttribute("fill", "yellow");
+        playNote(current.note, current.duration);
+        await new Promise(r => setTimeout(r, current.duration * 1000 * quarter));
+        // unhighlight
+        current.svgElement.setAttribute("fill", "white");
+
+        if (current.left) queue.push(current.left);
+        if (current.right) queue.push(current.right);
+    }
+}
 
 
 // setTimeout(() => preorderPlay(root), 1000); // start after 1 second
@@ -236,4 +267,14 @@ playInorderBtn.addEventListener("click", () => {
     bpm=bpmRange.value;
     quarter=60/bpm;
     inorderPlay(root);
+});
+playPostorderBtn.addEventListener("click", () => {
+    bpm=bpmRange.value;
+    quarter=60/bpm;
+    postorderPlay(root);
+});
+playBFSBtn.addEventListener("click", () => {
+    bpm=bpmRange.value;
+    quarter=60/bpm;
+    BFSPlay(root);
 });
