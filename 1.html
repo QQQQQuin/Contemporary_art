@@ -17,6 +17,13 @@
         <button id="play_postorder">Play Postorder</button>
         <button id="play_bfs">Play BFS</button>
     </div>
+
+    <div id="seq_input">Sequence Input
+        <div id="seq_bar">
+            <button id="seq_append_btn">+</button>
+        </div>
+    </div>
+
     <svg id="tree"></svg>
 
     <div id="popup">
@@ -37,8 +44,32 @@
         </select>
     </label>
     <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button id="popup_delete" style="margin-right:auto">Delete Leaf</button>
         <button id="popup_apply">Apply</button>
         <button id="popup_cancel">Cancel</button>
+    </div>
+    </div>
+
+    <div id="seq_popup">
+    <label>Note:
+        <select id="seq_popup_note"></select>
+    </label>
+    <label>Octave:
+        <select id="seq_popup_octave"></select>
+    </label>
+    <label>Duration:
+        <select id="seq_popup_duration">
+        <option value="0.125">0.125</option>
+        <option value="0.25">0.25</option>
+        <option value="0.5">0.5</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="4">4</option>
+        </select>
+    </label>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button id="seq_apply">Apply</button>
+        <button id="seq_cancel">Cancel</button>
     </div>
     </div>
     <script src="3.js"></script>
