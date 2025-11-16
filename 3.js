@@ -134,6 +134,7 @@ const popupOctave = document.getElementById("popup_octave");
 const popupDuration = document.getElementById("popup_duration");
 const popupApply = document.getElementById("popup_apply");
 const popupCancel = document.getElementById("popup_cancel");
+const popupDelete = document.getElementById("popup_delete");
 const notes_w_rest = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B","R"];
 notes_w_rest.forEach(note => {
     const opt = document.createElement("option");
@@ -166,6 +167,10 @@ function openPopup(node, x, y) {
         popupOctave.value = 4;
     }
     popupDuration.value = node.duration;
+
+    // Check if node is a leaf (no children)
+    const isLeaf = !node.left && !node.right;
+    popupDelete.style.display = isLeaf ? "inline-block" : "none";
 }
 
 popupApply.addEventListener("click", () => {
@@ -182,12 +187,40 @@ popupCancel.addEventListener("click", () => {
     popup.style.display = "none";
     currentNode = null;
 });
+popupDelete.addEventListener("click", () => {
+    if (!currentNode) return;
+    // Only delete if leaf
+    function deleteNode(parent, child) {   
+            if (!parent) return false;
+            if (parent.left === child) {
+                parent.left = null;
+                return true;
+            }
+            if (parent.right === child) {
+                parent.right = null;
+                return true;
+            }
+            return deleteNode(parent.left, child) || deleteNode(parent.right, child);
+        }
+        deleteNode(root, currentNode);
+        // Remove from SVG
+        svg.innerHTML = ""; // Clear SVG
+        drawTree(root); // Redraw tree
+        popup.style.display = "none";
+        currentNode = null;
+});
 document.addEventListener("click", (e) => {
     if (popup.style.display === "flex" && !popup.contains(e.target)) {
         popup.style.display = "none";
         currentNode = null;
     }
+    if (seqPopup.style.display === "flex" && !seqPopup.contains(e.target)) {
+        seqPopup.style.display = "none";
+        currentNode = null;
+    }
 });
+
+
 
 function playNote(note, duration) {
     const freq = noteFreqs[note];
@@ -278,3 +311,49 @@ playBFSBtn.addEventListener("click", () => {
     quarter=60/bpm;
     BFSPlay(root);
 });
+
+const seqAppendBtn=document.getElementById("seq_append_btn");
+const seqPopup = document.getElementById("seq_popup");
+const seqPopupNote = document.getElementById("seq_popup_note");
+const seqPopupOctave = document.getElementById("seq_popup_octave");
+const seqPopupDuration = document.getElementById("seq_popup_duration");
+const seqPopupApply = document.getElementById("seq_popup_apply");
+const seqPopupCancel = document.getElementById("seq_cancel");
+notes_w_rest.forEach(note => {
+    const opt = document.createElement("option");
+    opt.value = note;
+    opt.textContent = note;
+    seqPopupNote.appendChild(opt);
+});
+for (let o = 0; o <= 8; o++) {
+    const opt = document.createElement("option");
+    opt.value = o;
+    opt.textContent = o;
+    seqPopupOctave.appendChild(opt);
+}
+seqAppendBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    openSeqPopup(seqAppendBtn.getBoundingClientRect().right, seqAppendBtn.getBoundingClientRect().top);
+})
+seqPopupCancel.addEventListener("click", () => {
+    seqPopup.style.display = "none";
+    currentNode = null;
+});
+
+function openSeqPopup(x, y) {
+    console.log("Opening seq popup");
+    seqPopup.style.display = "flex";
+    seqPopup.style.left = `${x + 10}px`;
+    seqPopup.style.top = `${y - 10}px`;
+
+    // Parse node.note (e.g., "C4")
+    const match = root.note.match(/^([A-G]#?)(\d)$/);
+    if (match) {
+        seqPopupNote.value = match[1];
+        seqPopupOctave.value = match[2];
+    } else {
+        seqPopupNote.value = "C";
+        seqPopupOctave.value = 4;
+    }
+    seqPopupDuration.value = root.duration;
+}
