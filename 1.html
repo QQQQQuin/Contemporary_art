@@ -18,13 +18,27 @@
         <button id="play_bfs">Play BFS</button>
     </div>
 
-    <div id="seq_input">Sequence Input
-        <div id="seq_bar">
+    <div id="seq_input">
+        <div style="margin-bottom: 4px;">Sequence Input</div>
+        <div id="seq_container">
+            <div id="seq_bar"></div>
             <button id="seq_append_btn">+</button>
         </div>
+        <div>
+            <div id="seq_to_tree">Apply to Tree</div>
+            <div id="seq_traversal_buttons">
+                <button id="seq_preorder">Preorder</button>
+                <button id="seq_inorder">Inorder</button>
+                <button id="seq_postorder">Postorder</button>
+                <button id="seq_BFS">BFS</button>
+            </div>
+        </div>
+
     </div>
 
-    <svg id="tree"></svg>
+    <div id="svg_container" style="width: 100%; height: 500px; overflow: auto;">
+        <svg id="tree"></svg>
+    </div>
 
     <div id="popup">
     <label>Note:
@@ -72,6 +86,30 @@
         <button id="seq_cancel">Cancel</button>
     </div>
     </div>
-    <script src="3.js"></script>
+
+    <div id="seq_edit_popup">
+    <label>Note:
+        <select id="seq_edit_popup_note"></select>
+    </label>
+    <label>Octave:
+        <select id="seq_edit_popup_octave"></select>
+    </label>
+    <label>Duration:
+        <select id="seq_edit_popup_duration">
+        <option value="0.125">0.125</option>
+        <option value="0.25">0.25</option>
+        <option value="0.5">0.5</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="4">4</option>
+        </select>
+    </label>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button id="seq_edit_delete" style="margin-right:auto">Delete</button>
+        <button id="seq_edit_apply">Apply</button>
+        <button id="seq_edit_cancel">Cancel</button>
+    </div>
+    </div>
+    <script src="./3.js"></script>
 </body>
 </html>
