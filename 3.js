@@ -7,7 +7,11 @@ const bpmVal=document.getElementById("bpm_val");
 
 const stopBtn = document.getElementById("stop");
 const pauseBtn = document.getElementById("pause");
+const resumeBtn = document.getElementById("resume");
 
+let isPaused = false;
+let pausePromise = null;
+let resume = null;
 let stopRequested = false;
 
 // --- Audio setup ---
@@ -315,55 +319,85 @@ function playNote(note, duration) {
 // --- Preorder traversal (animated) ---
 async function preorderPlay(node) {
     if (!node || stopRequested) return;
-    // highlight
+
+    await checkPaused();
     node.svgElement.setAttribute("fill", "yellow");
+
+    await checkPaused();
     playNote(node.note, node.duration);
+
+    await checkPaused();
     await new Promise(r => setTimeout(r, node.duration * 1000 * quarter));
-    // unhighlight
+
     node.svgElement.setAttribute("fill", "white");
+
+    await checkPaused();
     await preorderPlay(node.left);
+
+    await checkPaused();
     await preorderPlay(node.right);
 }
 async function inorderPlay(node) {
     if (!node || stopRequested) return;
+    await checkPaused();
     await inorderPlay(node.left);
-    // highlight
+
+    await checkPaused();
     node.svgElement.setAttribute("fill", "yellow");
     playNote(node.note, node.duration);
+
+    await checkPaused();
     await new Promise(r => setTimeout(r, node.duration * 1000 * quarter));
-    // unhighlight
+
     node.svgElement.setAttribute("fill", "white");
+
+    await checkPaused();
     await inorderPlay(node.right);
 }
+
 async function postorderPlay(node) {
     if (!node || stopRequested) return;
+    await checkPaused();
     await postorderPlay(node.left);
+    await checkPaused();
     await postorderPlay(node.right);
-    // highlight
+    await checkPaused();
     node.svgElement.setAttribute("fill", "yellow");
+
+    await checkPaused();
     playNote(node.note, node.duration);
+
+    await checkPaused();
     await new Promise(r => setTimeout(r, node.duration * 1000 * quarter));
-    // unhighlight
     node.svgElement.setAttribute("fill", "white");
 }
-async function BFSPlay(node) {
-    if (!node || stopRequested) return;
 
-    const queue = [node];
+async function BFSPlay(root) {
+    if (!root || stopRequested) return;
+    const queue = [root];
+
     while (queue.length > 0) {
-        const current = queue.shift();
 
-        // highlight
-        current.svgElement.setAttribute("fill", "yellow");
-        playNote(current.note, current.duration);
-        await new Promise(r => setTimeout(r, current.duration * 1000 * quarter));
-        // unhighlight
-        current.svgElement.setAttribute("fill", "white");
+        await checkPaused();
 
-        if (current.left) queue.push(current.left);
-        if (current.right) queue.push(current.right);
+        const node = queue.shift();
+        if (!node) continue;
+
+        node.svgElement.setAttribute("fill", "yellow");
+
+        await checkPaused();
+        playNote(node.note, node.duration);
+
+        await checkPaused();
+        await new Promise(r => setTimeout(r, node.duration * 1000 * quarter));
+
+        node.svgElement.setAttribute("fill", "white");
+
+        if (node.left) queue.push(node.left);
+        if (node.right) queue.push(node.right);
     }
 }
+
 
 
 // setTimeout(() => preorderPlay(root), 1000); // start after 1 second
@@ -371,24 +405,28 @@ playPreorderBtn.addEventListener("click", () => {
     bpm=bpmRange.value;
     quarter=60/bpm;
     stopRequested = false;
+    isPaused = false;
     preorderPlay(root);
 });
 playInorderBtn.addEventListener("click", () => {
     bpm=bpmRange.value;
     quarter=60/bpm;
     stopRequested = false;
+    isPaused = false;
     inorderPlay(root);
 });
 playPostorderBtn.addEventListener("click", () => {
     bpm=bpmRange.value;
     quarter=60/bpm;
     stopRequested = false;
+    isPaused = false;
     postorderPlay(root);
 });
 playBFSBtn.addEventListener("click", () => {
     bpm=bpmRange.value;
     quarter=60/bpm;
     stopRequested = false;
+    isPaused = false;
     BFSPlay(root);
 });
 
@@ -425,7 +463,130 @@ const hpbdsong = [
 { note: "G4", duration: 1.0 },
 { note: "F4", duration: 2.0 },
 ];
-const seqInput = hpbdsong;
+const twinkleStar = [
+{note: "C4", duration: 1.0},
+{note: "C4", duration: 1.0},
+{note: "G4", duration: 1.0},
+{note: "G4", duration: 1.0},
+{note: "A4", duration: 1.0},
+{note: "A4", duration: 1.0},
+{note: "G4", duration: 2.0},
+{note: "REST", duration: 1.0},
+
+{note: "F4", duration: 1.0},
+{note: "F4", duration: 1.0},
+{note: "E4", duration: 1.0},
+{note: "E4", duration: 1.0},
+{note: "D4", duration: 1.0},
+{note: "D4", duration: 1.0},
+{note: "C4", duration: 2.0},
+{note: "REST", duration: 1.0},
+
+{note: "G4", duration: 1.0},
+{note: "G4", duration: 1.0},
+{note: "F4", duration: 1.0},
+{note: "F4", duration: 1.0},
+{note: "E4", duration: 1.0},
+{note: "E4", duration: 1.0},
+{note: "D4", duration: 2.0},
+{note: "REST", duration: 1.0},
+
+{note: "G4", duration: 1.0},
+{note: "G4", duration: 1.0},
+{note: "F4", duration: 1.0},
+{note: "F4", duration: 1.0},
+{note: "E4", duration: 1.0},
+{note: "E4", duration: 1.0},
+{note: "D4", duration: 2.0},
+{note: "REST", duration: 1.0},
+
+{note: "C4", duration: 1.0},
+{note: "C4", duration: 1.0},
+{note: "G4", duration: 1.0},
+{note: "G4", duration: 1.0},
+{note: "A4", duration: 1.0},
+{note: "A4", duration: 1.0},
+{note: "G4", duration: 2.0},
+{note: "REST", duration: 1.0},
+
+{note: "F4", duration: 1.0},
+{note: "F4", duration: 1.0},
+{note: "E4", duration: 1.0},
+{note: "E4", duration: 1.0},
+{note: "D4", duration: 1.0},
+{note: "D4", duration: 1.0},
+{note: "C4", duration: 2.0},
+{note: "REST", duration: 1.0},
+];
+const daisyBell = [
+// Phrase 1: "Daisy, Daisy, give me your answer do"
+{note: "G4", duration: 2.0},
+{note: "E4", duration: 2.0},
+{note: "C4", duration: 2.0},
+{note: "G3", duration: 2.0},
+{note: "A3", duration: 0.5},
+{note: "B3", duration: 0.5},
+{note: "C4", duration: 0.5},
+{note: "A3", duration: 1.0},
+{note: "C4", duration: 0.5},
+{note: "G3", duration: 2.0},
+{note: "REST", duration: 1.0},
+
+// Phrase 2: "I'm half crazy all for the love of you"
+{note: "D4", duration: 2.0},
+{note: "G4", duration: 2.0},
+{note: "E4", duration: 2.0},
+{note: "C4", duration: 2.0},
+{note: "A3", duration: 0.5},
+{note: "B3", duration: 0.5},
+{note: "C4", duration: 0.5},
+{note: "D4", duration: 1.0},
+{note: "E4", duration: 0.5},
+{note: "D4", duration: 2.0},
+{note: "REST", duration: 1.0},
+
+// Phrase 3: "It won't be a stylish marriage"
+{note: "E4", duration: 0.5},
+{note: "F4", duration: 0.5},
+{note: "E4", duration: 0.5},
+{note: "D4", duration: 0.5},
+{note: "G4", duration: 1.0},
+{note: "E4", duration: 0.5},
+{note: "D4", duration: 0.5},
+{note: "C4", duration: 1.0},
+{note: "REST", duration: 1.0},
+
+// Phrase 4: "I can't afford a carriage"
+{note: "D4", duration: 0.5},
+{note: "E4", duration: 1.0},
+{note: "C4", duration: 0.5},
+{note: "A3", duration: 1.0},
+{note: "C4", duration: 0.5},
+{note: "A3", duration: 0.5},
+{note: "G3", duration: 1.0},
+{note: "REST", duration: 1.0},
+
+// Phrase 5: "But you'll look sweet upon the seat"
+{note: "G3", duration: 0.5},
+{note: "C4", duration: 1.0},
+{note: "E4", duration: 0.5},
+{note: "D4", duration: 1.0},
+
+{note: "G3", duration: 0.5},
+{note: "C4", duration: 1.5},
+{note: "E4", duration: 0.5},
+{note: "D4", duration: 0.5},
+{note: "E4", duration: 0.5},
+{note: "F4", duration: 0.5},
+{note: "G4", duration: 0.5},
+{note: "E4", duration: 0.5},
+
+{note: "C4", duration: 0.5},
+{note: "D4", duration: 1.0},
+{note: "G3", duration: 1.0},
+{note: "C4", duration: 4.0},
+];
+const seqInput = daisyBell;
 drawSeqItems();
 
 seqAppendBtn.addEventListener("click", (e) => {
@@ -672,5 +833,24 @@ stopBtn.addEventListener("click", () => {
     stopRequested = true;
 });
 pauseBtn.addEventListener("click", () => {
-    
+    if (isPaused) return;  // already paused
+    isPaused = true;
+
+    // create a promise that traversal will wait on
+    pausePromise = new Promise(resolve => {
+        resume = resolve;   // store resolver for resume
+    });
 });
+resumeBtn.addEventListener("click", () => {
+    if (!isPaused) return;
+
+    isPaused = false;
+    resume();      // continue traversal
+    pausePromise = null;
+});
+
+async function checkPaused() {
+    while (isPaused) {
+        await pausePromise;   // wait until RESUME
+    }
+}
