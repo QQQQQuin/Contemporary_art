@@ -1,4 +1,4 @@
-const seqInput = [
+export const seqInput = [
 {note: "R", duration: 4.0},
 {note: "D#4", duration: 0.5},
 {note: "F4", duration: 0.5},
