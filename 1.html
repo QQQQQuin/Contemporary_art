@@ -12,10 +12,9 @@
 <body>
     <div class="controls">
         <label>BPM: <input type="range" id="bpm_range" min="60" max="200" value="140"> <span id="bpm_val">140</span></label>
-        <button id="play_preorder">Play Preorder</button>
-        <button id="play_inorder">Play Inorder</button>
-        <button id="play_postorder">Play Postorder</button>
-        <button id="play_bfs">Play BFS</button>
+        <button id="stop">Stop</button>
+        <button id="pause">Pause</button>
+        <button id="resume">Resume</button>
     </div>
 
     <div id="seq_input">
@@ -33,7 +32,12 @@
                 <button id="seq_BFS">BFS</button>
             </div>
         </div>
-
+    </div>
+    <div class="controls" id="play_constrols">
+        <button id="play_preorder">Play Preorder</button>
+        <button id="play_inorder">Play Inorder</button>
+        <button id="play_postorder">Play Postorder</button>
+        <button id="play_bfs">Play BFS</button>
     </div>
 
     <div id="svg_container" style="width: 100%; height: 500px; overflow: auto;">
