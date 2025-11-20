@@ -4,6 +4,12 @@ const playPostorderBtn=document.getElementById("play_postorder");
 const playBFSBtn=document.getElementById("play_bfs");
 const bpmRange=document.getElementById("bpm_range");
 const bpmVal=document.getElementById("bpm_val");
+
+const stopBtn = document.getElementById("stop");
+const pauseBtn = document.getElementById("pause");
+
+let stopRequested = false;
+
 // --- Audio setup ---
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
@@ -49,34 +55,6 @@ root.right.right = new Node("REST", 1.0);
 const svg = document.getElementById("tree");
 const width = svg.clientWidth;
 const levelHeight = 100;
-
-// function layoutTree(root) {
-//     let x = 0;
-//     function assign(node, depth = 0) {
-//         if (!node) return;
-//         assign(node.left, depth + 1);
-//         node.x = x++;
-//         node.y = depth;
-//         assign(node.right, depth + 1);
-//     }
-//     assign(root);
-
-//     let nodes = [];
-//     function collect(n) {
-//         if (!n) return;
-//         nodes.push(n);
-//         collect(n.left);
-//         collect(n.right);
-//     }
-//     collect(root);
-
-//     const spacingX = width / (x + 1);
-//     for (let n of nodes) {
-//         n.x = (n.x + 1) * spacingX;
-//         n.y = (n.y + 1) * levelHeight + 40;
-//     }
-//     return nodes;
-// }
 
 function layoutTree(root) {
     let x = 0;
@@ -336,7 +314,7 @@ function playNote(note, duration) {
 
 // --- Preorder traversal (animated) ---
 async function preorderPlay(node) {
-    if (!node) return;
+    if (!node || stopRequested) return;
     // highlight
     node.svgElement.setAttribute("fill", "yellow");
     playNote(node.note, node.duration);
@@ -347,7 +325,7 @@ async function preorderPlay(node) {
     await preorderPlay(node.right);
 }
 async function inorderPlay(node) {
-    if (!node) return;
+    if (!node || stopRequested) return;
     await inorderPlay(node.left);
     // highlight
     node.svgElement.setAttribute("fill", "yellow");
@@ -358,7 +336,7 @@ async function inorderPlay(node) {
     await inorderPlay(node.right);
 }
 async function postorderPlay(node) {
-    if (!node) return;
+    if (!node || stopRequested) return;
     await postorderPlay(node.left);
     await postorderPlay(node.right);
     // highlight
@@ -369,7 +347,7 @@ async function postorderPlay(node) {
     node.svgElement.setAttribute("fill", "white");
 }
 async function BFSPlay(node) {
-    if (!node) return;
+    if (!node || stopRequested) return;
 
     const queue = [node];
     while (queue.length > 0) {
@@ -392,32 +370,63 @@ async function BFSPlay(node) {
 playPreorderBtn.addEventListener("click", () => {
     bpm=bpmRange.value;
     quarter=60/bpm;
+    stopRequested = false;
     preorderPlay(root);
 });
 playInorderBtn.addEventListener("click", () => {
     bpm=bpmRange.value;
     quarter=60/bpm;
+    stopRequested = false;
     inorderPlay(root);
 });
 playPostorderBtn.addEventListener("click", () => {
     bpm=bpmRange.value;
     quarter=60/bpm;
+    stopRequested = false;
     postorderPlay(root);
 });
 playBFSBtn.addEventListener("click", () => {
     bpm=bpmRange.value;
     quarter=60/bpm;
+    stopRequested = false;
     BFSPlay(root);
 });
 
 // load from file
-// import { seqInput } from "./bad_apple.js";
-// console.log(seqInput);
-
 
 // --- Sequence Input ---
-const seqInput = [];
-
+const hpbdsong = [
+{ note: "C4", duration: 0.5 },
+{ note: "C4", duration: 0.5 },
+{ note: "D4", duration: 1.0 },
+{ note: "C4", duration: 1.0 },
+{ note: "F4", duration: 1.0 },
+{ note: "E4", duration: 2.0 },
+{ note: "REST", duration: 1.0 },
+{ note: "C4", duration: 0.5 },
+{ note: "C4", duration: 0.5 },
+{ note: "D4", duration: 1.0 },
+{ note: "C4", duration: 1.0 },
+{ note: "F4", duration: 1.0 },
+{ note: "E4", duration: 2.0 },
+{ note: "REST", duration: 1.0 },
+{ note: "C4", duration: 0.5 },
+{ note: "C4", duration: 0.5 },
+{ note: "C5", duration: 1.0 },
+{ note: "A4", duration: 1.0 },
+{ note: "F4", duration: 1.0 },
+{ note: "E4", duration: 1.0 },
+{ note: "D4", duration: 2.0 },
+{ note: "REST", duration: 1.0 },
+{ note: "A#4", duration: 0.5 },
+{ note: "A#4", duration: 0.5 },
+{ note: "A4", duration: 1.0 },
+{ note: "F4", duration: 1.0 },
+{ note: "G4", duration: 1.0 },
+{ note: "F4", duration: 2.0 },
+];
+const seqInput = hpbdsong;
+drawSeqItems();
 
 seqAppendBtn.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -657,3 +666,11 @@ function buildTreeFromBFS(arr) {
     }
     return nodes[0]; // root
 }
+
+
+stopBtn.addEventListener("click", () => {
+    stopRequested = true;
+});
+pauseBtn.addEventListener("click", () => {
+    
+});
