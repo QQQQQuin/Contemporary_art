@@ -393,7 +393,6 @@ async function BFSPlay(root) {
 
         await checkPaused();
         await new Promise(r => setTimeout(r, node.duration * 1000 * quarter));
-        if (stopRequested) return;
 
         node.svgElement.setAttribute("fill", "white");
 
