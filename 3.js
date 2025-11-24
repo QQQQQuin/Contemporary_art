@@ -359,8 +359,10 @@ async function postorderPlay(node) {
     if (!node || stopRequested) return;
     await checkPaused();
     await postorderPlay(node.left);
+    if (stopRequested) return;
     await checkPaused();
     await postorderPlay(node.right);
+    if (stopRequested) return;
     await checkPaused();
     node.svgElement.setAttribute("fill", "yellow");
 
@@ -379,6 +381,7 @@ async function BFSPlay(root) {
     while (queue.length > 0) {
 
         await checkPaused();
+        if (stopRequested) return;
 
         const node = queue.shift();
         if (!node) continue;
@@ -390,6 +393,7 @@ async function BFSPlay(root) {
 
         await checkPaused();
         await new Promise(r => setTimeout(r, node.duration * 1000 * quarter));
+        if (stopRequested) return;
 
         node.svgElement.setAttribute("fill", "white");
 
@@ -445,8 +449,8 @@ const hpbdsong = [
 { note: "C4", duration: 0.5 },
 { note: "D4", duration: 1.0 },
 { note: "C4", duration: 1.0 },
-{ note: "F4", duration: 1.0 },
-{ note: "E4", duration: 2.0 },
+{ note: "G4", duration: 1.0 },
+{ note: "F4", duration: 2.0 },
 { note: "REST", duration: 1.0 },
 { note: "C4", duration: 0.5 },
 { note: "C4", duration: 0.5 },
@@ -573,7 +577,7 @@ const daisyBell = [
 {note: "D4", duration: 1.0},
 
 {note: "G3", duration: 0.5},
-{note: "C4", duration: 1.5},
+{note: "C4", duration: 1.0},
 {note: "E4", duration: 0.5},
 {note: "D4", duration: 0.5},
 {note: "E4", duration: 0.5},
@@ -583,11 +587,11 @@ const daisyBell = [
 
 {note: "C4", duration: 0.5},
 {note: "D4", duration: 1.0},
-{note: "G3", duration: 1.0},
+{note: "G3", duration: 0.5},
 {note: "C4", duration: 4.0},
 ];
-const seqInput = daisyBell;
-drawSeqItems();
+
+let seqInput = [];
 
 seqAppendBtn.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -854,3 +858,24 @@ async function checkPaused() {
         await pausePromise;   // wait until RESUME
     }
 }
+
+const hpbdbtn = document.getElementById("hpbdsong");
+const twinklebtn = document.getElementById("twinkle_star");
+const daisybtn = document.getElementById("daisy_bell");
+
+hpbdbtn.addEventListener("click", () => {
+    seqInput.length = 0;
+    Array.prototype.push.apply(seqInput, hpbdsong);
+    drawSeqItems();
+});
+twinklebtn.addEventListener("click", () => {
+    seqInput.length = 0;
+    Array.prototype.push.apply(seqInput, twinkleStar);
+    drawSeqItems();
+});
+daisybtn.addEventListener("click", () => {
+    seqInput.length = 0;
+    Array.prototype.push.apply(seqInput, daisyBell);
+    console.log(seqInput);
+    drawSeqItems();
+});
