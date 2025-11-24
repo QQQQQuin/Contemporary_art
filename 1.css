@@ -95,3 +95,21 @@ svg {
     width: 80000px;
     height: 5000px;
 }
+
+#sample_songs {
+    color:#eee;
+    background-color: #151515;
+    border-radius: 4px;
+    padding: 4px;
+}
+button {
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+#main{
+    resize: both;
+    overflow: auto;
+    min-height: 20vh;
+}
