@@ -10,6 +10,7 @@
 </style>
 </head>
 <body>
+    <div id="main">
     <div class="controls">
         <label>BPM: <input type="range" id="bpm_range" min="60" max="200" value="140"> <span id="bpm_val">140</span></label>
         <button id="stop">Stop</button>
@@ -23,7 +24,7 @@
             <div id="seq_bar"></div>
             <button id="seq_append_btn">+</button>
         </div>
-        <div>
+        <div class="controls">
             <div id="seq_to_tree">Apply to Tree</div>
             <div id="seq_traversal_buttons">
                 <button id="seq_preorder">Preorder</button>
@@ -32,6 +33,13 @@
                 <button id="seq_BFS">BFS</button>
             </div>
         </div>
+        <div class="controls" id="sample_songs">
+            <div>Sample Songs</div>
+            <button id="hpbdsong">Happy Birthday Song</button>
+            <button id="twinkle_star">Twinkle Star</button>
+            <button id="daisy_bell">Daisy Bell</button>
+        </div>
+    </div>
     </div>
     <div class="controls" id="play_constrols">
         <button id="play_preorder">Play Preorder</button>
@@ -39,8 +47,7 @@
         <button id="play_postorder">Play Postorder</button>
         <button id="play_bfs">Play BFS</button>
     </div>
-
-    <div id="svg_container" style="width: 100%; height: 500px; overflow: auto;">
+    <div id="svg_container" style="width: 100%; height: 700px; overflow: auto;">
         <svg id="tree"></svg>
     </div>
 
