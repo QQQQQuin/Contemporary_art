@@ -110,6 +110,9 @@ svg {
     padding: 4px;
 }
 button {
+    height: 24px;
+    line-height: 24px;
+    font-family: "Noto Sans SC", Arial, sans-serif;
     cursor: pointer;
     border-radius: 4px;
     font-size: 16px;
@@ -152,6 +155,8 @@ button {
             <button id="twinkle_star">Twinkle Star</button>
             <button id="daisy_bell">Daisy Bell</button>
             <button id="bad_apple">Bad Apple!!</button>
+            <button id="senbonzakura">千本桜</button>
+            
         </div>
     </div>
     </div>
@@ -828,6 +833,7 @@ const daisyBell = [
 {note: "C4", duration: 4.0},
 ];
 import { seqInput as badApple } from "https://cdn.jsdelivr.net/gh/QQQQQuin/Contemporary_art@e217478/songs/bad_apple.js";
+import { seqInput as senbonzakura } from "https://cdn.jsdelivr.net/gh/QQQQQuin/Contemporary_art/songs/senbonzakura.js";
 
 let seqInput = [];
 
@@ -1101,6 +1107,7 @@ const hpbdbtn = document.getElementById("hpbdsong");
 const twinklebtn = document.getElementById("twinkle_star");
 const daisybtn = document.getElementById("daisy_bell");
 const badapplebtn = document.getElementById("bad_apple");
+const senbonzakurabtn = document.getElementById("senbonzakura");
 
 hpbdbtn.addEventListener("click", () => {
     seqInput.length = 0;
@@ -1121,6 +1128,11 @@ daisybtn.addEventListener("click", () => {
 badapplebtn.addEventListener("click", () => {
     seqInput.length = 0;
     Array.prototype.push.apply(seqInput, badApple);
+    drawSeqItems();
+});
+senbonzakurabtn.addEventListener("click", () => {
+    seqInput.length = 0;
+    Array.prototype.push.apply(seqInput, senbonzakura);
     drawSeqItems();
 });
     </script>
