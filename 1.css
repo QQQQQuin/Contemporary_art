@@ -3,11 +3,9 @@ body {
     background: #151515;
     color: white;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    align-items: left;
     font-family: sans-serif;
     overflow-x: hidden;
-    height: 99vh;
 }
 svg {
     width: 90vw;
@@ -58,6 +56,7 @@ svg {
     color: rgb(30, 30, 30);
 }
 #seq_container button, .seq_item {
+    font-size: 18;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -96,7 +95,7 @@ svg {
     height: 5000px;
 }
 
-#sample_songs {
+#sample_songs, #play_constrols {
     color:#eee;
     background-color: #151515;
     border-radius: 4px;
@@ -109,7 +108,46 @@ button {
 }
 
 #main{
-    resize: both;
+    height: 100vh;
+    resize: horizontal;
     overflow: auto;
-    min-height: 20vh;
+    flex: 0 0 auto;     /* flex-grow:0, flex-shrink:0, width:auto */
+    width: 400px; 
+}
+
+#svg_container{
+    flex: 1;            /* fill remaining space */
+    overflow: auto;
+}
+
+#intoduction_container{
+    position: absolute;
+    bottom: 4%;
+    left: 4%;
+}
+
+#introduction_popup{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  /* centers it */
+
+    background: white;
+    color: rgb(30, 30, 30);
+    border: 2px solid #444;
+    border-radius: 8px;
+    padding: 36px;
+    max-height: 70vh;
+    width: 36vw;
+    display: none;
+    z-index: 100;
+}
+
+#introduction_popup button{
+    border-radius: 80px;
+    height: 28px;
+    width: 28px;
+    position: absolute;
+    right: 8px;
+    top: 8px;
 }
