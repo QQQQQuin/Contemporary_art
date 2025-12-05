@@ -47,13 +47,15 @@ class Node {
 }
 
 // Create a small binary tree
+// const root = new Node("C4", 0.5);
+// root.left = new Node("C4", 0.5);
+// root.right = new Node("F4", 1.0);
+// root.left.left = new Node("D4", 1.0);
+// root.left.right = new Node("C4", 1.0);
+// root.right.left = new Node("E4", 2.0);
+// root.right.right = new Node("REST", 1.0);
+
 const root = new Node("C4", 0.5);
-root.left = new Node("C4", 0.5);
-root.right = new Node("F4", 1.0);
-root.left.left = new Node("D4", 1.0);
-root.left.right = new Node("C4", 1.0);
-root.right.left = new Node("E4", 2.0);
-root.right.right = new Node("REST", 1.0);
 
 // --- Visualization ---
 const svg = document.getElementById("tree");
@@ -172,6 +174,9 @@ function closeAllPopups() {
     popup.style.display = "none";
     seqPopup.style.display = "none";
     seqEditPopup.style.display = "none";
+
+    introPopup.style.display = "none";
+
     currentNode = null;
     currentItem = null;
 }
@@ -292,7 +297,8 @@ document.addEventListener("click", (e) => {
     if (
         popup.contains(e.target) ||
         seqPopup.contains(e.target) ||
-        seqEditPopup.contains(e.target)
+        seqEditPopup.contains(e.target) ||
+        introPopup.contains(e.target)
     ) return;
 
     // Otherwise close all popups
@@ -592,6 +598,9 @@ const daisyBell = [
 
 let seqInput = [];
 
+// seqInput = senbonsakura.slice(); // Copy the array
+drawSeqItems();
+
 seqAppendBtn.addEventListener("click", (e) => {
     e.stopPropagation();
     openSeqPopup(seqAppendBtn.getBoundingClientRect().right, seqAppendBtn.getBoundingClientRect().top);
@@ -878,3 +887,20 @@ daisybtn.addEventListener("click", () => {
     console.log(seqInput);
     drawSeqItems();
 });
+
+const introBtn = document.getElementById("intro_btn");
+const introPopup = document.getElementById("introduction_popup");
+const introPopupClose = document.getElementById("introduction_popup_close");
+
+introBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    openIntroPopup();
+});
+introPopupClose.addEventListener("click", () => {
+    introPopup.style.display = "none";
+});
+
+function openIntroPopup() {
+    closeAllPopups();
+    introPopup.style.display = "flex";
+}
