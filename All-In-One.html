@@ -110,20 +110,23 @@ svg {
     padding: 4px;
 }
 button {
-    height: 24px;
-    line-height: 24px;
-    font-family: "Noto Sans SC", Arial, sans-serif;
     cursor: pointer;
     border-radius: 4px;
     font-size: 16px;
 }
+#sample_songs button{
+    height: 24px;
+    line-height: 24px;
+    font-family: "Noto Sans SC", Arial, sans-serif;
+}
+
 
 #main{
     height: 100vh;
     resize: horizontal;
     overflow: auto;
     flex: 0 0 auto;     /* flex-grow:0, flex-shrink:0, width:auto */
-    width: 400px; 
+    width: 432px; 
 }
 
 #svg_container{
@@ -137,7 +140,7 @@ button {
     left: 4%;
 }
 
-#introduction_popup{
+.popup2{
     position: fixed;
     top: 50%;
     left: 50%;
@@ -151,10 +154,11 @@ button {
     max-height: 70vh;
     width: 36vw;
     display: none;
+    flex-direction: column;
     z-index: 100;
 }
 
-#introduction_popup button{
+.popup2 button{
     border-radius: 80px;
     height: 28px;
     width: 28px;
@@ -162,6 +166,15 @@ button {
     right: 8px;
     top: 8px;
     border: 2px solid white;
+}
+
+.title_s{
+    width: auto;
+    background-color: #434343;
+    border-radius: 4px;
+    color: white;
+    font-size: 20px;
+    padding: 4px;
 }
 </style>
 </head>
@@ -210,7 +223,7 @@ button {
 
         <div id="intoduction_container">
             <button id="intro_btn">introduction</button>
-            <button>?</button>
+            <button id="help_btn">?</button>
         </div>
     </div>
 
@@ -298,8 +311,9 @@ button {
     </div>
     </div>
 
-    <div id="introduction_popup">
+    <div id="introduction_popup" class="popup2">
         <button id="introduction_popup_close">X</button>
+        <div class="title_s">Introduction</div>
         建立一個Binary Tree，每個節點對應一個音符，透過不同演算法traverse這個Tree，聆聽一首曲子在不同演算法下的旋律
         <br/><br/>
         總共有4種演算法: Preorder、Inorder、Postorder、BFS
@@ -309,10 +323,31 @@ button {
         Sequence Build Tree中可以輸入你要播放的順序，完成後在Build Tree Order裡選擇一種遍歷方式，此時建立的樹在該種遍歷方式下播放會播出與輸入相同的順序
     </div>
 
+    <div id="help_popup" class="popup2">
+        <button id="help_popup_close">X</button>
+        <div class="title_s">Sequence Build Tree</div>
+        點擊 + 方塊可以新增音符進去序列<br/>
+        點擊序列中方塊可己編輯音符
+        <br/><br/>
+        <div class="title_s">Build Tree Order</div>
+        根據4種演算法: Preorder、Inorder、Postorder、BFS建立樹<br/>
+        (以Preorder建立後用Preorder播放就會播出原本序列順序)
+        <br/><br/>
+        <div class="title_s">Sample Songs</div>
+        點擊Sample Song會取代原本序列中的方塊
+        <br/><br/>
+        <div class="title_s">Play Order</div>
+        根據4種演算法: Preorder、Inorder、Postorder、BFS播放樹上的音符<br/>
+        (每種演算法有各自的播放順序)
+        <br/><br/>
+        <div class="title_s">Binary Tree</div>
+        點擊Tree上的節點可以編輯該節點的音符
+    </div>
+
 
 
     <script type="module">
-        const playPreorderBtn=document.getElementById("play_preorder");
+    const playPreorderBtn=document.getElementById("play_preorder");
 const playInorderBtn=document.getElementById("play_inorder");
 const playPostorderBtn=document.getElementById("play_postorder");
 const playBFSBtn=document.getElementById("play_bfs");
@@ -490,6 +525,7 @@ function closeAllPopups() {
     seqEditPopup.style.display = "none";
 
     introPopup.style.display = "none";
+    helpPopup.style.display = "none";
 
     currentNode = null;
     currentItem = null;
@@ -612,7 +648,8 @@ document.addEventListener("click", (e) => {
         popup.contains(e.target) ||
         seqPopup.contains(e.target) ||
         seqEditPopup.contains(e.target) ||
-        introPopup.contains(e.target)
+        introPopup.contains(e.target) ||
+        helpPopup.contains(e.target)
     ) return;
 
     // Otherwise close all popups
@@ -910,9 +947,8 @@ const daisyBell = [
 {note: "C4", duration: 4.0},
 ];
 
-let seqInput = [];
+let seqInput = [{ note: "C4", duration: 0.5 }];
 
-// seqInput = senbonsakura.slice(); // Copy the array
 drawSeqItems();
 
 seqAppendBtn.addEventListener("click", (e) => {
@@ -1218,6 +1254,24 @@ function openIntroPopup() {
     closeAllPopups();
     introPopup.style.display = "flex";
 }
+
+const helpBtn = document.getElementById("help_btn");
+const helpPopup = document.getElementById("help_popup");
+const helpPopupClose = document.getElementById("help_popup_close");
+
+helpBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    openHelpPopup();
+});
+helpPopupClose.addEventListener("click", () => {
+    helpPopup.style.display = "none";
+});
+
+function openHelpPopup() {
+    closeAllPopups();
+    helpPopup.style.display = "flex";
+}
+
 import { seqInput as badApple } from "https://cdn.jsdelivr.net/gh/QQQQQuin/Contemporary_art@e217478/songs/bad_apple.js";
 import { seqInput as senbonzakura } from "https://cdn.jsdelivr.net/gh/QQQQQuin/Contemporary_art/songs/senbonzakura.js";
 
