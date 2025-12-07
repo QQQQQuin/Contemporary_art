@@ -350,6 +350,7 @@ async function inorderPlay(node) {
     await checkPaused();
     await inorderPlay(node.left);
 
+    if (stopRequested) return;
     await checkPaused();
     node.svgElement.setAttribute("fill", "yellow");
     playNote(node.note, node.duration);
@@ -359,6 +360,7 @@ async function inorderPlay(node) {
 
     node.svgElement.setAttribute("fill", "white");
 
+    if (stopRequested) return;
     await checkPaused();
     await inorderPlay(node.right);
 }
@@ -374,9 +376,9 @@ async function postorderPlay(node) {
     await checkPaused();
     node.svgElement.setAttribute("fill", "yellow");
 
+    if (stopRequested) return;
     await checkPaused();
     playNote(node.note, node.duration);
-
     await checkPaused();
     await new Promise(r => setTimeout(r, node.duration * 1000 * quarter));
     node.svgElement.setAttribute("fill", "white");
@@ -396,6 +398,7 @@ async function BFSPlay(root) {
 
         node.svgElement.setAttribute("fill", "yellow");
 
+        if (stopRequested) return;
         await checkPaused();
         playNote(node.note, node.duration);
 
@@ -404,6 +407,7 @@ async function BFSPlay(root) {
 
         node.svgElement.setAttribute("fill", "white");
 
+        if (stopRequested) return;
         if (node.left) queue.push(node.left);
         if (node.right) queue.push(node.right);
     }
@@ -922,3 +926,4 @@ function openHelpPopup() {
     closeAllPopups();
     helpPopup.style.display = "flex";
 }
+
