@@ -112,7 +112,7 @@ button {
     resize: horizontal;
     overflow: auto;
     flex: 0 0 auto;     /* flex-grow:0, flex-shrink:0, width:auto */
-    width: 400px; 
+    width: 432px; 
 }
 
 #svg_container{
@@ -126,7 +126,7 @@ button {
     left: 4%;
 }
 
-#introduction_popup{
+.popup2{
     position: fixed;
     top: 50%;
     left: 50%;
@@ -140,14 +140,25 @@ button {
     max-height: 70vh;
     width: 36vw;
     display: none;
+    flex-direction: column;
     z-index: 100;
 }
 
-#introduction_popup button{
+.popup2 button{
     border-radius: 80px;
     height: 28px;
     width: 28px;
     position: absolute;
     right: 8px;
     top: 8px;
+    border: 2px solid white;
+}
+
+.title_s{
+    width: auto;
+    background-color: #434343;
+    border-radius: 4px;
+    color: white;
+    font-size: 20px;
+    padding: 4px;
 }
