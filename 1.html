@@ -52,7 +52,7 @@
 
         <div id="intoduction_container">
             <button id="intro_btn">introduction</button>
-            <button>?</button>
+            <button id="help_btn">?</button>
         </div>
     </div>
 
@@ -140,8 +140,9 @@
     </div>
     </div>
 
-    <div id="introduction_popup">
+    <div id="introduction_popup" class="popup2">
         <button id="introduction_popup_close">X</button>
+        <div class="title_s">Introduction</div>
         建立一個Binary Tree，每個節點對應一個音符，透過不同演算法traverse這個Tree，聆聽一首曲子在不同演算法下的旋律
         <br/><br/>
         總共有4種演算法: Preorder、Inorder、Postorder、BFS
@@ -151,8 +152,26 @@
         Sequence Build Tree中可以輸入你要播放的順序，完成後在Build Tree Order裡選擇一種遍歷方式，此時建立的樹在該種遍歷方式下播放會播出與輸入相同的順序
     </div>
 
-
-
+    <div id="help_popup" class="popup2">
+        <button id="help_popup_close">X</button>
+        <div class="title_s">Sequence Build Tree</div>
+        點擊 + 方塊可以新增音符進去序列<br/>
+        點擊序列中方塊可己編輯音符
+        <br/><br/>
+        <div class="title_s">Build Tree Order</div>
+        根據4種演算法: Preorder、Inorder、Postorder、BFS建立樹<br/>
+        (以Preorder建立後用Preorder播放就會播出原本序列順序)
+        <br/><br/>
+        <div class="title_s">Sample Songs</div>
+        點擊Sample Song會取代原本序列中的方塊
+        <br/><br/>
+        <div class="title_s">Play Order</div>
+        根據4種演算法: Preorder、Inorder、Postorder、BFS播放樹上的音符<br/>
+        (每種演算法有各自的播放順序)
+        <br/><br/>
+        <div class="title_s">Binary Tree</div>
+        點擊Tree上的節點可以編輯該節點的音符
+    </div>
     <script src="./3.js"></script>
 </body>
 </html>
