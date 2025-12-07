@@ -176,6 +176,7 @@ function closeAllPopups() {
     seqEditPopup.style.display = "none";
 
     introPopup.style.display = "none";
+    helpPopup.style.display = "none";
 
     currentNode = null;
     currentItem = null;
@@ -298,7 +299,8 @@ document.addEventListener("click", (e) => {
         popup.contains(e.target) ||
         seqPopup.contains(e.target) ||
         seqEditPopup.contains(e.target) ||
-        introPopup.contains(e.target)
+        introPopup.contains(e.target) ||
+        helpPopup.contains(e.target)
     ) return;
 
     // Otherwise close all popups
@@ -596,9 +598,8 @@ const daisyBell = [
 {note: "C4", duration: 4.0},
 ];
 
-let seqInput = [];
+let seqInput = [{ note: "C4", duration: 0.5 }];
 
-// seqInput = senbonsakura.slice(); // Copy the array
 drawSeqItems();
 
 seqAppendBtn.addEventListener("click", (e) => {
@@ -903,4 +904,21 @@ introPopupClose.addEventListener("click", () => {
 function openIntroPopup() {
     closeAllPopups();
     introPopup.style.display = "flex";
+}
+
+const helpBtn = document.getElementById("help_btn");
+const helpPopup = document.getElementById("help_popup");
+const helpPopupClose = document.getElementById("help_popup_close");
+
+helpBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    openHelpPopup();
+});
+helpPopupClose.addEventListener("click", () => {
+    helpPopup.style.display = "none";
+});
+
+function openHelpPopup() {
+    closeAllPopups();
+    helpPopup.style.display = "flex";
 }
