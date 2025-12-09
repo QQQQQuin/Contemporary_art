@@ -176,6 +176,26 @@ button {
     font-size: 20px;
     padding: 4px;
 }
+
+#intoduction_container button{
+    height: 80px;
+    width: 100px;
+    font-size: 32px;
+    border-radius: 12px;
+}
+
+ul{
+    margin: 0px;
+    padding: auto 2px;
+}
+
+#play_constrols{
+    font-size: 28px;
+    margin: 40px;
+    border: 4px solid white;
+    border-radius: 12px;
+    padding: 8px;
+}
 </style>
 </head>
 <body>
@@ -222,8 +242,8 @@ button {
 
 
         <div id="intoduction_container">
-            <button id="intro_btn">introduction</button>
-            <button id="help_btn">?</button>
+            <button id="intro_btn">INFO</button>
+            <button id="help_btn">HELP</button>
         </div>
     </div>
 
@@ -314,13 +334,23 @@ button {
     <div id="introduction_popup" class="popup2">
         <button id="introduction_popup_close">X</button>
         <div class="title_s">Introduction</div>
-        建立一個Binary Tree，每個節點對應一個音符，透過不同演算法traverse這個Tree，聆聽一首曲子在不同演算法下的旋律
+        這是一棵「音樂二元樹」。樹上的每個節點都代表一個音符。<br/>
+        你可以選擇用不同的演算法去走訪這棵樹，而走訪的順序會直接決定你聽到的旋律順序。
         <br/><br/>
-        總共有4種演算法: Preorder、Inorder、Postorder、BFS
-        <br/><br/>
-        每種演算法在遍歷(traverse)樹時有不同的順序，進而影響播出音符的順序
-        <br/><br/>
-        Sequence Build Tree中可以輸入你要播放的順序，完成後在Build Tree Order裡選擇一種遍歷方式，此時建立的樹在該種遍歷方式下播放會播出與輸入相同的順序
+        總共有四種走訪方式：
+        <ul>
+            <li>Preorder</li>
+            <li>Inorder</li>
+            <li>Postorder</li>
+            <li>BFS</li>
+        </ul>
+        每種走法會以不同的順序拜訪樹上的節點，所以音符的播放順序也會跟著變。<br/><br/>
+
+        在 Sequence Build Tree 裡，你可以先輸入你想要播放的音符順序。<br/>
+        接著在 Build Tree Order 選擇一種走訪方式，我們就會建立一棵樹，讓它在你選的那種走法下播放時，音符順序會剛好跟你輸入的一樣。<br/>
+
+        簡單來說，就是：<br/>
+        你輸入一段旋律 → 選一種走樹方式 → 我們替你生出一棵樹 → 用那種走法走樹時會播放出你原本輸入的旋律。也可以用其他走法去聽這棵樹在其他走法下聽起來如何。<br/>
     </div>
 
     <div id="help_popup" class="popup2">
@@ -334,7 +364,7 @@ button {
         (以Preorder建立後用Preorder播放就會播出原本序列順序)
         <br/><br/>
         <div class="title_s">Sample Songs</div>
-        點擊Sample Song會取代原本序列中的方塊
+        點擊Sample Song會取代原本序列中的方塊，然後選擇一種演算法Build Tree Order，之後就可以在Play Order播放
         <br/><br/>
         <div class="title_s">Play Order</div>
         根據4種演算法: Preorder、Inorder、Postorder、BFS播放樹上的音符<br/>
